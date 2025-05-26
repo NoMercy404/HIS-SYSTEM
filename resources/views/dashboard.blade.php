@@ -7,6 +7,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+@if(session('status'))
+    <p class="text-green-600 font-semibold mb-4">{{ session('status') }}</p>
+@endif
 
 <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-xl text-center">
     <h1 class="text-3xl font-bold text-blue-600 mb-4">
@@ -26,6 +29,15 @@
     @else
         <p class="text-gray-500 italic mb-4">Brak informacji o ostatniej zmianie hasła.</p>
     @endif
+
+
+
+
+    <a href="{{ route('password.change.form') }}"
+       class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+        Zmień hasło
+    </a>
+
 
 
     <a href="{{ route('logout') }}"

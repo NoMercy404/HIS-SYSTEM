@@ -1,9 +1,10 @@
 <?php
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Carbon;
+
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -42,3 +43,23 @@ Route::get('/dashboard', function () {
         'daysLeft' => $daysLeft,
     ]);
 })->middleware('auth')->name('dashboard');
+
+
+Route::get('/password/change', function () {
+    return view('auth.change-password');
+})->middleware('auth')->name('password.change.form');
+
+
+Route::post('/password/change', function (Request $request) {
+    $request->validate([
+        'current_password' => ['required', 'current_password'],
+        'new_password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
+
+    $user = $request->user();
+    $user->password = Hash::make($request->new_password);
+    $user->password_changed_at = now();
+    $user->save();
+
+    return redirect()->route('dashboard')->with('status', 'Hasło zostało zmienione.');
+})->middleware('auth')->name('password.change');
