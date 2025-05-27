@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Request;
+
 use App\Models\Visit;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\AuthController;
@@ -56,7 +58,6 @@ Route::post('/password/change', function (Request $request) {
         'current_password' => ['required', 'current_password'],
         'new_password' => ['required', 'string', 'min:8', 'confirmed'],
     ]);
-
     $user = $request->user();
     $user->password = Hash::make($request->new_password);
     $user->password_changed_at = now();
@@ -65,9 +66,30 @@ Route::post('/password/change', function (Request $request) {
     return redirect()->route('password.change.form')->with('status', 'Hasło zostało zmienione.');
 })->middleware('auth')->name('password.change');
 
-Route::get('/wizyty', function () {
-    $visits = Visit::orderBy('visit_date', 'asc')->get();
-    return view('visits', compact('visits'));
+Route::get('/wizyty', function (Request $request) {
+    $filter = $request->query('filter');
+    $doctorId = $request->query('doctor_id');
+
+    $query = Visit::with(['patient', 'doctor']);
+
+    if ($filter === 'mine') {
+        $query->where('doctor_id', Auth::id());
+    } elseif ($filter === 'today') {
+        $query->whereDate('visit_date', Carbon::today());
+    }
+
+    if ($doctorId) {
+        $query->where('doctor_id', $doctorId);
+    }
+
+    $visits = $query->orderBy('visit_date','desc')->get();
+    $doctors = User::where('role', 'lekarz')
+        ->orderBy('last_name')
+        ->orderBy('first_name')
+        ->get();
+
+
+    return view('visits', compact('visits', 'doctors'));
 })->middleware('auth')->name('visits.index');
 
 Route::get('/visits/my', function () {

@@ -38,8 +38,9 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                 <tr class="bg-gray-100 text-gray-700">
-                    <th class="py-2 px-4 border-b">ID Pacjenta</th>
-                    <th class="py-2 px-4 border-b">Data wizyty</th>
+                    <th class="py-2 px-4 border-b">Imię i Nazwisko pacjenta</th>
+                    <th class="py-2 px-4 border-b">Data</th>
+                    <th class="py-2 px-4 border-b">Godzina wizyty</th>
                     <th class="py-2 px-4 border-b">Gabinet</th>
                     <th class="py-2 px-4 border-b">Notatka</th>
                 </tr>
@@ -47,8 +48,15 @@
                 <tbody>
                 @foreach($visits as $visit)
                     <tr class="hover:bg-gray-50">
-                        <td class="py-2 px-4 border-b">{{ $visit->patient_id }}</td>
-                        <td class="py-2 px-4 border-b">{{ \Carbon\Carbon::parse($visit->visit_date)->format('d.m.Y') }}</td>
+                        <td class="py-2 px-4 border-b">
+                            {{ $visit->patient->first_name ?? '-' }} {{ $visit->patient->last_name ?? '-' }}
+                        </td>
+                        <td class="py-2 px-4 border-b">
+                            {{ \Carbon\Carbon::parse($visit->visit_date)->format('d.m.Y') }}
+                        </td>
+                        <td class="py-2 px-4 border-b">
+                            {{ \Carbon\Carbon::parse($visit->visit_date)->format('H:i') }}
+                        </td>
                         <td class="py-2 px-4 border-b">{{ $visit->visit_room }}</td>
                         <td class="py-2 px-4 border-b">{{ $visit->visit_note }}</td>
                     </tr>

@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+@php use Illuminate\Support\Str; @endphp
+
+    <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +14,7 @@
 <aside class="w-64 bg-white shadow-md p-6 space-y-4">
     <h2 class="text-xl font-bold text-blue-600 mb-6">Menu</h2>
     <nav class="flex flex-col space-y-2">
-        <a href="{{ route('visits.my') }}" class="text-gray-700 hover:text-blue-600">👨‍⚕️ Moje wizyty</a>
+        <a href="{{ route('visits.index') }}" class="text-gray-700 hover:text-blue-600">📅️ Wizyty</a>
         <a href="#" class="text-gray-700 hover:text-blue-600">🧑‍⚕️ Pacjenci</a>
         <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-blue-600">ℹ️ O mnie</a>
         <a href="{{ route('password.change.form') }}" class="text-gray-700 hover:text-blue-600">🔐 Zmień hasło</a>
@@ -30,12 +32,16 @@
 <main class="flex-1 p-10">
     <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-md mx-auto">
         <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Zmień hasło</h2>
-
         @if(session('status'))
-            <p class="text-green-600 mb-4">{{ session('status') }}</p>
+            @php
+                $statusMessage = session('status');
+                $statusColor = Str::contains($statusMessage, 'przestarzałe') ? 'text-orange-600' : 'text-green-600';
+            @endphp
+            <p class="{{ $statusColor }} font-semibold mb-4">{{ $statusMessage }}</p>
         @endif
 
-        @if ($errors->any())
+
+    @if ($errors->any())
             <div class="text-red-600 mb-4">
                 <ul class="list-disc list-inside">
                     @foreach ($errors->all() as $error)

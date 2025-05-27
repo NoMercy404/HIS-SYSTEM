@@ -14,11 +14,24 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('dashboard');
+            $request->session()->regenerate();
+
+            $user = Auth::user();
+
+            // Sprawdź czy hasło było zmieniane ponad 30 dni temu
+            if (!$user->password_changed_at || $user->password_changed_at->diffInDays(now()) > 30) {
+                return redirect()->route('password.change.form')
+                    ->with('status', 'Twoje hasło jest przestarzałe. Zmień je, aby kontynuować.');
+            }
+
+            return redirect()->intended('dashboard');
         }
 
-        return back()->with('error', 'Nieprawidłowe dane logowania.');
+        return back()->withErrors([
+            'email' => 'Nieprawidłowe dane logowania.',
+        ]);
     }
+
 
     public function register(Request $request)
     {

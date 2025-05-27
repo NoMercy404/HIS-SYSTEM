@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->enum('role', ['admin', 'lekarz'])->default('lekarz');
             $table->string('password');
-            $table->date('password_changed_at')->nullable(); // do wymuszenia zmiany hasła
+            $table->dateTime('password_changed_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
