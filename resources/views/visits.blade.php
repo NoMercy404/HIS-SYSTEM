@@ -12,7 +12,7 @@
 <aside class="w-64 bg-white shadow-md p-6 space-y-4">
     <h2 class="text-xl font-bold text-blue-600 mb-6">Menu</h2>
     <nav class="flex flex-col space-y-2">
-        <a href="{{ route('visits.my') }}" class="text-gray-700 hover:text-blue-600">👨‍⚕️ Moje wizyty</a>
+        <a href="{{ route('visits.index') }}" class="text-gray-700 hover:text-blue-600">📅 Wizyty</a>
         <a href="#" class="text-gray-700 hover:text-blue-600">🧑‍⚕️ Pacjenci</a>
         <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-blue-600">ℹ️ O mnie</a>
         <a href="{{ route('password.change.form') }}" class="text-gray-700 hover:text-blue-600">🔐 Zmień hasło</a>
@@ -28,7 +28,49 @@
 
 <!-- Main content -->
 <main class="flex-1 p-10">
-    <h1 class="text-3xl font-bold text-blue-600 mb-6">📅 Wizyty</h1>
+    @php
+        $headerTitle = match(request('filter')) {
+            'mine' => '👨‍⚕️ Moje wizyty',
+            'today' => '📅 Dzisiejsze wizyty',
+            default => '📋 Wszystkie wizyty',
+        };
+    @endphp
+
+    <h1 class="text-3xl font-bold text-blue-600 mb-6">{{ $headerTitle }}</h1>
+    <div class="flex items-center gap-4 mb-6">
+        <a href="{{ route('visits.index') }}"
+           class="px-4 py-2 {{ request('filter') === null && request('doctor_id') === null ? 'bg-gray-300' : 'bg-gray-200' }} rounded hover:bg-gray-300">
+            Wszystkie wizyty
+        </a>
+
+        <a href="{{ route('visits.index', ['filter' => 'mine']) }}"
+           class="px-4 py-2 {{ request('filter') === 'mine' ? 'bg-blue-300' : 'bg-blue-200' }} rounded hover:bg-blue-300">
+            Moje wizyty
+        </a>
+
+        <a href="{{ route('visits.index', ['filter' => 'today']) }}"
+           class="px-4 py-2 {{ request('filter') === 'today' ? 'bg-green-300' : 'bg-green-200' }} rounded hover:bg-green-300">
+            Dzisiejsze wizyty
+        </a>
+
+        @if(request('filter') !== 'mine')
+            <!-- Lista rozwijana z lekarzami -->
+            <form method="GET" action="{{ route('visits.index') }}">
+                <input type="hidden" name="filter" value="{{ request('filter') }}">
+                <select name="doctor_id" onchange="this.form.submit()" class="ml-4 px-3 py-2 border rounded">
+                    <option value="">-- Wybierz lekarza --</option>
+                    @foreach($doctors as $doctor)
+                        <option value="{{ $doctor->id }}" {{ request('doctor_id') == $doctor->id ? 'selected' : '' }}>
+                            {{ $doctor->first_name[0] }}. {{ $doctor->last_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
+
+        @endif
+    </div>
+
+
 
     <div class="bg-white p-6 rounded-lg shadow-md">
         @if($visits->isEmpty())
@@ -37,19 +79,32 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                 <tr class="bg-gray-100 text-gray-700">
-                    <th class="py-2 px-4 border-b">ID Pacjenta</th>
-                    <th class="py-2 px-4 border-b">ID Lekarza</th>
-                    <th class="py-2 px-4 border-b">Data wizyty</th>
+                    <th class="py-2 px-4 border-b">Pacjent</th>
+                    <th class="py-2 px-4 border-b">Lekarz</th>
+                    <th class="py-2 px-4 border-b">Data</th>
+                    <th class="py-2 px-4 border-b">Godzina</th>
                     <th class="py-2 px-4 border-b">Gabinet</th>
                     <th class="py-2 px-4 border-b">Notatka</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($visits as $visit)
-                    <tr class="hover:bg-gray-50">
-                        <td class="py-2 px-4 border-b">{{ $visit->patient_id }}</td>
-                        <td class="py-2 px-4 border-b">{{ $visit->doctor_id }}</td>
-                        <td class="py-2 px-4 border-b">{{ \Carbon\Carbon::parse($visit->visit_date)->format('d.m.Y') }}</td>
+                    @php
+                        $isPast = \Carbon\Carbon::parse($visit->visit_date)->isPast();
+                    @endphp
+                    <tr class="{{ $isPast ? 'bg-gray-200 text-gray-500' : 'hover:bg-gray-50' }}">
+                        <td class="py-2 px-4 border-b">
+                            {{ $visit->patient->first_name }} {{ $visit->patient->last_name }}
+                        </td>
+                        <td class="py-2 px-4 border-b">
+                            {{ strtoupper(substr($visit->doctor->first_name, 0, 1)) }}.{{ $visit->doctor->last_name }}
+                        </td>
+                        <td class="py-2 px-4 border-b">
+                            {{ \Carbon\Carbon::parse($visit->visit_date)->format('d.m.Y') }}
+                        </td>
+                        <td class="py-2 px-4 border-b">
+                            {{ \Carbon\Carbon::parse($visit->visit_date)->format('H:i') }}
+                        </td>
                         <td class="py-2 px-4 border-b">{{ $visit->visit_room }}</td>
                         <td class="py-2 px-4 border-b">{{ $visit->visit_note }}</td>
                     </tr>
