@@ -62,7 +62,7 @@ Route::post('/password/change', function (Request $request) {
     $user->password_changed_at = now();
     $user->save();
 
-    return redirect()->route('dashboard')->with('status', 'Hasło zostało zmienione.');
+    return redirect()->route('password.change.form')->with('status', 'Hasło zostało zmienione.');
 })->middleware('auth')->name('password.change');
 
 Route::get('/wizyty', function () {
