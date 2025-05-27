@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use App\Models\Visit;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -63,3 +64,16 @@ Route::post('/password/change', function (Request $request) {
 
     return redirect()->route('dashboard')->with('status', 'Hasło zostało zmienione.');
 })->middleware('auth')->name('password.change');
+
+Route::get('/wizyty', function () {
+    $visits = Visit::orderBy('visit_date', 'asc')->get();
+    return view('visits', compact('visits'));
+})->middleware('auth')->name('visits.index');
+
+Route::get('/visits/my', function () {
+    $visits = Visit::where('doctor_id', Auth::id())->get();
+
+    return view('visits.my', [
+        'visits' => $visits,
+    ]);
+})->middleware('auth')->name('visits.my');
