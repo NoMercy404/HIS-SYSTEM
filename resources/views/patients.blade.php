@@ -12,11 +12,13 @@
 <aside class="w-64 bg-white shadow-md p-6 space-y-4">
     <h2 class="text-xl font-bold text-blue-600 mb-6">Menu</h2>
     <nav class="flex flex-col space-y-2">
-        <a href="{{ route('visits.index') }}" class="text-gray-700 hover:text-blue-600">📅️ Wizyty</a>
+        <a href="{{ route('visits.index') }}" class="text-gray-700 hover:text-blue-600">📅 Wizyty</a>
         <a href="{{ route('patients.index') }}" class="text-gray-700 hover:text-blue-600">🧑‍⚕️ Pacjenci</a>
+        <a href="{{ route('research.index') }}" class="text-gray-700 hover:text-blue-600">🧪 Badania</a>
         <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-blue-600">ℹ️ O mnie</a>
         <a href="{{ route('password.change.form') }}" class="text-gray-700 hover:text-blue-600">🔐 Zmień hasło</a>
     </nav>
+
     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="mt-6">
         @csrf
         <button type="submit" class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition">
@@ -37,9 +39,10 @@
 
     <!-- Pole wyszukiwania i filtr "Na oddziale" -->
     <form method="GET" action="{{ route('patients.index') }}" class="mb-6 flex flex-wrap gap-4 items-center">
-        <input type="text" name="search" placeholder="Szukaj po imieniu, nazwisku lub PESELu"
+        <input type="text" name="search" placeholder="Imie, Nazwisko lub PESEL"
                value="{{ request('search') }}"
-               class="px-4 py-2 border rounded w-64">
+               class="px-4 py-2 border rounded w-96 bg-sky-50 placeholder-black-50">
+
 
         <button type="submit"
                 class="bg-yellow-200 text-black px-4 py-2 rounded hover:bg-yellow-300 transition">

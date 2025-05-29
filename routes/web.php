@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Visit;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ResearchController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PatientsController;
 use App\Http\Controllers\VisitController;
@@ -65,7 +66,7 @@ Route::post('/password/change', function (Request $request) {
     $user->password_changed_at = now();
     $user->save();
 
-    return redirect()->route('password.change.form')->with('status', 'Hasło zostało zmienione.');
+    return redirect()->route('dashboard')->with('status', 'Hasło zostało zmienione.');
 })->middleware('auth')->name('password.change');
 
 Route::get('/wizyty', function (Request $request) {
@@ -139,5 +140,5 @@ Route::get('/patients', [PatientsController::class, 'index'])->name('patients.in
 Route::get('/patients/create', [PatientsController::class, 'create'])->name('patients.create');
 
 Route::resource('patients', PatientsController::class);
-
+Route::resource('research', ResearchController::class);
 

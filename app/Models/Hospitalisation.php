@@ -44,4 +44,11 @@ class Hospitalisation extends Model
             'password' => 'hashed',
         ];
     }
+    public function patient()
+    {
+        return $this->belongsTo(Patients::class, 'patient_id');
+    }
+
+
+
 }

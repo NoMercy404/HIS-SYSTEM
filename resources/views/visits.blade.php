@@ -14,6 +14,7 @@
     <nav class="flex flex-col space-y-2">
         <a href="{{ route('visits.index') }}" class="text-gray-700 hover:text-blue-600">📅 Wizyty</a>
         <a href="{{ route('patients.index') }}" class="text-gray-700 hover:text-blue-600">🧑‍⚕️ Pacjenci</a>
+        <a href="{{ route('research.index') }}" class="text-gray-700 hover:text-blue-600">🧪 Badania</a>
         <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-blue-600">ℹ️ O mnie</a>
         <a href="{{ route('password.change.form') }}" class="text-gray-700 hover:text-blue-600">🔐 Zmień hasło</a>
     </nav>
