@@ -19,6 +19,7 @@ return new class extends Migration
             $table->dateTime('DateOfBirth');
             $table->string('adress');
             $table->integer('phoneNumber');
+            $table->boolean('is_on_ward')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

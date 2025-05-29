@@ -10,10 +10,33 @@ class PatientsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Patient::query();
+
+        // Filtrowanie po imieniu, nazwisku lub PESEL
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%$search%")
+                    ->orWhere('last_name', 'like', "%$search%")
+                    ->orWhere('PESEL', 'like', "%$search%");
+            });
+        }
+
+        // Filtrowanie po tym, czy pacjent jest na oddziale
+        if ($request->has('on_ward')) {
+            $query->where('is_on_ward', true);
+        }
+
+        // Sortowanie od najstarszego do najmłodszego
+        $patients = $query->orderBy('DateOfBirth')->get();
+
+        return view('patients.index', [
+            'patients' => $patients,
+            'search' => $search
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
