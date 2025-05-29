@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\Patients;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
 use App\Models\Visit;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\AuthController;
@@ -99,3 +99,28 @@ Route::get('/visits/my', function () {
         'visits' => $visits,
     ]);
 })->middleware('auth')->name('visits.my');
+
+
+Route::get('/patients', function (Request $request) {
+    $query = Patients::query();
+
+    if ($search = $request->input('search')) {
+        $query->where(function ($q) use ($search) {
+            $q->where('first_name', 'like', "%$search%")
+                ->orWhere('last_name', 'like', "%$search%")
+                ->orWhere('PESEL', 'like', "%$search%");
+        });
+    }
+
+    if ($request->has('on_ward')) {
+        $query->where('is_on_ward', true);
+    }
+
+    $patients = $query->orderBy('DateOfBirth')->get();
+
+    return view('patients', [
+        'patients' => $patients,
+        'search' => $search
+    ]);
+})->name('patients.index');
+

@@ -20,6 +20,7 @@ class PatientsFactory extends Factory
             'DateOfBirth' => $this->faker->dateTime(),
             'adress' => $this->faker->address(),
             'phoneNumber' => $this->faker->phoneNumber(),
+            'is_on_ward' => $this->faker->boolean(),
             'remember_token' => \Str::random(10),
         ];
     }
