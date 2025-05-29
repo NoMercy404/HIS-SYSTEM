@@ -39,7 +39,7 @@
     <h1 class="text-3xl font-bold text-blue-600 mb-6">{{ $headerTitle }}</h1>
     <div class="flex items-center gap-4 mb-6">
         <a href="{{ route('visits.index') }}"
-           class="px-4 py-2 {{ request('filter') === null && request('doctor_id') === null ? 'bg-gray-300' : 'bg-gray-200' }} rounded hover:bg-gray-300">
+           class="px-4 py-2 {{ request('filter') === null && request('doctor_id') === null ? 'bg-yellow-200' : 'bg-yellow-200' }} rounded hover:bg-yellow-300">
             Wszystkie wizyty
         </a>
 
@@ -54,7 +54,6 @@
         </a>
 
         @if(request('filter') !== 'mine')
-            <!-- Lista rozwijana z lekarzami -->
             <form method="GET" action="{{ route('visits.index') }}">
                 <input type="hidden" name="filter" value="{{ request('filter') }}">
                 <select name="doctor_id" onchange="this.form.submit()" class="ml-4 px-3 py-2 border rounded">
@@ -66,9 +65,14 @@
                     @endforeach
                 </select>
             </form>
-
         @endif
+
+        <a href="{{ route('visits.create') }}"
+           class="ml-auto bg-violet-200 text-black px-4 py-2 rounded hover:bg-violet-300 transition">
+            Dodaj wizytę
+        </a>
     </div>
+
 
 
 
@@ -79,6 +83,7 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                 <tr class="bg-gray-100 text-gray-700">
+
                     <th class="py-2 px-4 border-b">Pacjent</th>
                     <th class="py-2 px-4 border-b">Lekarz</th>
                     <th class="py-2 px-4 border-b">Data</th>
@@ -90,9 +95,18 @@
                 <tbody>
                 @foreach($visits as $visit)
                     @php
-                        $isPast = \Carbon\Carbon::parse($visit->visit_date)->isPast();
+
+                    $visitDate = $visit->visit_date instanceof \Carbon\Carbon
+                        ? $visit->visit_date
+                        : \Carbon\Carbon::parse($visit->visit_date);
+
+                    $isPast = $visitDate->lt(now());
+
+
+
                     @endphp
-                    <tr class="{{ $isPast ? 'bg-gray-200 text-gray-500' : 'hover:bg-gray-50' }}">
+                    <tr class="{{ $isPast ? 'bg-gray-200 text-gray-500' : 'hover:bg-gray-50 cursor-pointer' }}"
+                        onclick="openModal({{ $visit->id }})">
                         <td class="py-2 px-4 border-b">
                             {{ $visit->patient->first_name }} {{ $visit->patient->last_name }}
                         </td>
@@ -108,12 +122,76 @@
                         <td class="py-2 px-4 border-b">{{ $visit->visit_room }}</td>
                         <td class="py-2 px-4 border-b">{{ $visit->visit_note }}</td>
                     </tr>
+
                 @endforeach
                 </tbody>
             </table>
         @endif
     </div>
+    <!-- Modal -->
+    <div id="visitModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-xl shadow-lg">
+            <h2 class="text-xl font-bold mb-4 text-blue-600">Szczegóły wizyty</h2>
+
+            <div id="modalContent" class="space-y-4">
+                <!-- Wypełniane przez JavaScript -->
+            </div>
+
+            <div class="flex justify-end gap-4 mt-6">
+                <button onclick="closeModal()" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Zamknij</button>
+            </div>
+        </div>
+    </div>
+
 </main>
+<script>
+    const visits = @json($visits);
+
+    function openModal(id) {
+        const modal = document.getElementById('visitModal');
+        const content = document.getElementById('modalContent');
+        const visit = visits.find(v => v.id === id);
+
+        const formattedDate = new Date(visit.visit_date).toISOString().slice(0, 16); // for datetime-local
+
+        content.innerHTML = `
+            <p><strong>Pacjent:</strong> ${visit.patient.first_name} ${visit.patient.last_name}</p>
+            <p><strong>Lekarz:</strong> ${visit.doctor.first_name} ${visit.doctor.last_name}</p>
+            <p><strong>Gabinet:</strong> ${visit.visit_room}</p>
+            <p><strong>Data i godzina:</strong> ${new Date(visit.visit_date).toLocaleString()}</p>
+
+            <!-- Anuluj -->
+            <form action="/visits/${visit.id}" method="POST" onsubmit="return confirm('Na pewno chcesz anulować?')">
+                @csrf
+        @method('DELETE')
+        <button type="submit" class="bg-red-600 text-white px-4 py-2 mt-2 rounded hover:bg-red-700 w-full">🗑️ Anuluj wizytę</button>
+    </form>
+
+    <!-- Zmień termin -->
+    <form action="/visits/${visit.id}/reschedule" method="POST" class="mt-4">
+                @csrf
+        @method('PUT')
+        <label class="block mb-1 text-sm text-gray-600">Nowa data i godzina:</label>
+        <input type="datetime-local" name="visit_date" min="${new Date().toISOString().slice(0, 16)}" value="${formattedDate}" required class="border px-3 py-2 rounded w-full mb-2">
+                <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 w-full">🕓 Zmień termin wizyty</button>
+            </form>
+
+            <!-- Edytuj -->
+            <form action="/visits/${visit.id}/edit" method="GET" class="mt-4">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">✏️ Edytuj wizytę</button>
+            </form>
+        `;
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('visitModal');
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }
+</script>
 
 </body>
 </html>

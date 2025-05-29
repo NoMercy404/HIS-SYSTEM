@@ -57,10 +57,12 @@ class PatientsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Patients $patients)
+    public function show($id)
     {
-        //
+        $patient = Patients::findOrFail($id);
+        return view('patients.show', compact('patient'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

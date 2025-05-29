@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('patient_id');
             $table->integer('doctor_id');
-            $table->date('visit_date');
+            $table->dateTime('visit_date');
             $table->integer('visit_room');
             $table->string('visit_note');
             $table->rememberToken();

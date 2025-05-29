@@ -20,7 +20,7 @@ class Visit extends Model
     protected $dates = ['visit_date'];
 
     public function patient() {
-        return $this->belongsTo(User::class, 'patient_id');
+        return $this->belongsTo(Patients::class, 'patient_id');
     }
 
     public function doctor() {
