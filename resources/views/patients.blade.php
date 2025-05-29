@@ -40,10 +40,19 @@
             Szukaj
         </button>
 
-        <a href="{{ route('patients.index', array_merge(request()->all(), ['on_ward' => 1])) }}"
-           class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
-            👨‍⚕️ Pokaż pacjentów na oddziale
+        @php
+            $isOnWard = request('on_ward') == 1;
+            $params = request()->except('on_ward');
+            if (!$isOnWard) {
+                $params['on_ward'] = 1;
+            }
+        @endphp
+
+        <a href="{{ route('patients.index', $params) }}"
+           class="{{ $isOnWard ? 'bg-blue-200  hover:bg-blue-300' : 'bg-green-200 hover:bg-green-300' }} text-black px-4 py-2 rounded transition">
+            {{ $isOnWard ? 'Pokaż wszystkich pacjentów' : 'Pokaż pacjentów na oddziale' }}
         </a>
+
     </form>
 
 
@@ -54,29 +63,28 @@
             <table class="w-full border-collapse text-left">
                 <thead>
                 <tr class="bg-gray-100 text-gray-700">
-                    <th class="py-2 px-4 border-b">Imię</th>
-                    <th class="py-2 px-4 border-b">Nazwisko</th>
-                    <th class="py-2 px-4 border-b">PESEL</th>
-                    <th class="py-2 px-4 border-b">Data urodzenia</th>
-                    <th class="py-2 px-4 border-b">Telefon</th>
-                    <th class="py-2 px-4 border-b">Adres</th>
+                    <th class="py-2 px-4 border-b w-32">Imię</th>
+                    <th class="py-2 px-4 border-b w-32">Nazwisko</th>
+                    <th class="py-2 px-4 border-b w-40">PESEL</th>
+                    <th class="py-2 px-4 border-b w-40">Data urodzenia</th>
+                    <th class="py-2 px-4 border-b w-32">Telefon</th>
+                    <th class="py-2 px-4 border-b w-64">Adres</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($patients as $patient)
-
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-gray-50 cursor-pointer"
+                        onclick="window.location='{{ route('patients.show', $patient->id) }}'">
                         <td class="py-2 px-4 border-b">{{ $patient->first_name }}</td>
                         <td class="py-2 px-4 border-b">{{ $patient->last_name }}</td>
                         <td class="py-2 px-4 border-b">{{ $patient->PESEL }}</td>
-                        <td class="py-2 px-4 border-b">
-                            {{ \Carbon\Carbon::parse($patient->DateOfBirth)->format('d.m.Y') }}
-                        </td>
+                        <td class="py-2 px-4 border-b">{{ \Carbon\Carbon::parse($patient->DateOfBirth)->format('d.m.Y') }}</td>
                         <td class="py-2 px-4 border-b">{{ $patient->phoneNumber }}</td>
                         <td class="py-2 px-4 border-b">{{ $patient->adress }}</td>
                     </tr>
                 @endforeach
                 </tbody>
+
             </table>
         @endif
     </div>

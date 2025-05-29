@@ -10,6 +10,8 @@ use App\Models\Visit;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\PatientsController;
+use App\Http\Controllers\VisitController;
 
 Route::view('/', 'welcome')->name('home');
 Route::view('/login', 'auth.login')->name('login');
@@ -116,11 +118,19 @@ Route::get('/patients', function (Request $request) {
         $query->where('is_on_ward', true);
     }
 
-    $patients = $query->orderBy('DateOfBirth')->get();
+    $patients = $query->orderBy('last_name')->get();
 
     return view('patients', [
         'patients' => $patients,
         'search' => $search
     ]);
 })->name('patients.index');
+
+Route::get('/patients/{id}', [PatientsController::class, 'show'])->name('patients.show');
+Route::delete('/visits/{id}', [VisitController::class, 'destroy'])->name('visits.destroy');
+Route::put('/visits/{id}/reschedule', [VisitController::class, 'reschedule'])->name('visits.reschedule');
+Route::get('/visits/{id}/edit', [VisitController::class, 'edit'])->name('visits.edit');
+Route::put('/visits/{id}', [VisitController::class, 'update'])->name('visits.update');
+Route::get('/visits/create', [VisitController::class, 'create'])->name('visits.create');
+Route::post('/visits', [VisitController::class, 'store'])->name('visits.store');
 
