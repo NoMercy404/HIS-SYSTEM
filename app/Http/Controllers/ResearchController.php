@@ -12,8 +12,10 @@ class ResearchController extends Controller
      */
     public function index()
     {
-        //
+        $researches = \App\Models\Research::all();
+        return view('research.research', compact('researches'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -62,4 +64,5 @@ class ResearchController extends Controller
     {
         //
     }
+
 }

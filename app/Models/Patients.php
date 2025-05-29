@@ -49,4 +49,14 @@ class Patients extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function visits()
+    {
+        return $this->hasMany(Visit::class, 'patient_id');
+    }
+    public function hospitalisations()
+    {
+        return $this->hasMany(Hospitalisation::class, 'patient_id');
+    }
+
+
 }

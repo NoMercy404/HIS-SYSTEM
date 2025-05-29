@@ -17,10 +17,14 @@ class Research extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'hospital_id',
+        'research_type',
+        'note',
+        'date_of_research',
+        'status',
+        'result',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,4 +48,11 @@ class Research extends Model
             'password' => 'hashed',
         ];
     }
+    public function hospitalisation()
+    {
+        return $this->belongsTo(Hospitalisation::class, 'hospital_id');
+    }
+
+
+
 }
