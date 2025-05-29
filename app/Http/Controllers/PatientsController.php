@@ -98,4 +98,15 @@ class PatientsController extends Controller
     {
         //
     }
+
+    public function history($id)
+    {
+        $patient = Patients::with('visits')->findOrFail($id);
+
+        return view('patients.history', [
+            'patient' => $patient,
+            'visits' => $patient->visits
+        ]);
+    }
+
 }

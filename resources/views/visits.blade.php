@@ -139,7 +139,7 @@
 
             <div class="flex justify-center mt-6 w-full">
                 <button onclick="closeModal()" class="bg-gray-300 text-gray-800 px-6 py-2 rounded hover:bg-gray-400 transition">
-                    ← Wróć do listy pacjentów
+                    ← Wróć do listy wizyt
                 </button>
             </div>
         </div>

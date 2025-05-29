@@ -20,10 +20,19 @@
         <li><strong>Na oddziale:</strong> {{ $patient->is_on_ward ? 'Tak' : 'Nie' }}</li>
     </ul>
 
-    <a href="{{ route('patients.index') }}"
-       class="mt-6 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-        ⬅️ Wróć do listy
-    </a>
+    <div class="flex justify-between items-center mt-6">
+        <a href="{{ route('patients.history', $patient->id) }}"
+           class="bg-green-200 text-black px-4 py-2 rounded hover:bg-green-300 transition">
+            Zobacz historię pacjenta
+        </a>
+        <a href="{{ route('patients.index') }}"
+           class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition">
+            ← Wróć do listy pacjentów
+        </a>
+
+
+    </div>
+
 </div>
 
 </body>

@@ -9,7 +9,7 @@
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
 <div class="w-full max-w-xl bg-white p-6 rounded-lg shadow-md">
-    <h1 class="text-3xl font-bold text-blue-600 mb-6 text-center">➕ Dodaj pacjenta</h1>
+    <h1 class="text-3xl font-bold text-blue-600 mb-6 text-center">Dodaj pacjenta</h1>
 
     @if ($errors->any())
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">

@@ -126,6 +126,7 @@ Route::get('/patients', function (Request $request) {
     ]);
 })->name('patients.index');
 
+Route::get('/patients/{id}/history', [PatientsController::class, 'history'])->name('patients.history');
 Route::get('/patients/{id}', [PatientsController::class, 'show'])->where('id', '[0-9]+')->name('patients.show');
 Route::delete('/visits/{id}', [VisitController::class, 'destroy'])->name('visits.destroy');
 Route::put('/visits/{id}/reschedule', [VisitController::class, 'reschedule'])->name('visits.reschedule');
