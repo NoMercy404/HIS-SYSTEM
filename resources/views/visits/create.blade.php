@@ -7,7 +7,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen p-10">
 
-<h1 class="text-3xl font-bold text-blue-600 mb-6">Dodaj wizytę</h1>
+<h1 class="text-3xl font-bold text-blue-600 mb-6 text-center">Dodaj wizytę</h1>
 
 <form method="POST" action="{{ route('visits.store') }}" class="bg-white p-6 rounded-lg shadow-md max-w-xl mx-auto">
     @csrf
@@ -44,13 +44,14 @@
         <label for="visit_note" class="block mb-1 font-medium">Notatka:</label>
         <textarea name="visit_note" id="visit_note" rows="3" class="w-full border px-3 py-2 rounded"></textarea>
     </div>
-
+    <div class="flex items-center gap-4 justify-center pt-4">
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
         Zapisz wizytę
     </button>
     <a href="{{ route('visits.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
-        Anuluj
+        ← Wróć do listy pacjentów
     </a>
+    </div>
 </form>
 
 </body>

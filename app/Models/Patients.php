@@ -17,10 +17,15 @@ class Patients extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'first_name',
+        'last_name',
+        'PESEL',
+        'DateOfBirth',
+        'phoneNumber',
+        'adress',
+        'is_on_ward',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
