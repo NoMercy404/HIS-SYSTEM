@@ -126,11 +126,17 @@ Route::get('/patients', function (Request $request) {
     ]);
 })->name('patients.index');
 
-Route::get('/patients/{id}', [PatientsController::class, 'show'])->name('patients.show');
+Route::get('/patients/{id}', [PatientsController::class, 'show'])->where('id', '[0-9]+')->name('patients.show');
 Route::delete('/visits/{id}', [VisitController::class, 'destroy'])->name('visits.destroy');
 Route::put('/visits/{id}/reschedule', [VisitController::class, 'reschedule'])->name('visits.reschedule');
 Route::get('/visits/{id}/edit', [VisitController::class, 'edit'])->name('visits.edit');
 Route::put('/visits/{id}', [VisitController::class, 'update'])->name('visits.update');
 Route::get('/visits/create', [VisitController::class, 'create'])->name('visits.create');
 Route::post('/visits', [VisitController::class, 'store'])->name('visits.store');
+
+Route::get('/patients', [PatientsController::class, 'index'])->name('patients.index');
+Route::get('/patients/create', [PatientsController::class, 'create'])->name('patients.create');
+
+Route::resource('patients', PatientsController::class);
+
 

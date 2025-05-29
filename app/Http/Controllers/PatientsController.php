@@ -12,7 +12,7 @@ class PatientsController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Patient::query();
+        $query = Patients::query();
 
         // Filtrowanie po imieniu, nazwisku lub PESEL
         if ($search = $request->input('search')) {
@@ -29,9 +29,9 @@ class PatientsController extends Controller
         }
 
         // Sortowanie od najstarszego do najmłodszego
-        $patients = $query->orderBy('DateOfBirth')->get();
+        $patients = $query->orderBy('last_name')->get();
 
-        return view('patients.index', [
+        return view('patients', [
             'patients' => $patients,
             'search' => $search
         ]);
@@ -43,16 +43,27 @@ class PatientsController extends Controller
      */
     public function create()
     {
-        //
+        return view('patients.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'PESEL' => 'required|string|max:11|unique:patients',
+            'DateOfBirth' => 'required|date',
+            'phoneNumber' => 'nullable|string|max:20',
+            'adress' => 'nullable|string|max:255',
+        ]);
+        $validated['is_on_ward'] = $request->has('is_on_ward') ? 1 : 0;
+
+        \App\Models\Patients::create($validated);
+
+        return redirect()->route('patients.index')->with('success', 'Pacjent dodany!');
+
     }
+
 
     /**
      * Display the specified resource.

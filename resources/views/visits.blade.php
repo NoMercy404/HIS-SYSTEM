@@ -129,19 +129,23 @@
         @endif
     </div>
     <!-- Modal -->
-    <div id="visitModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-lg p-6 w-full max-w-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-blue-600">Szczegóły wizyty</h2>
+    <div id="visitModal" class="fixed inset-0 bg-green bg-opacity-30 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 w-full max-w-xl shadow-2xl">
+            <h2 class="text-3xl font-bold text-blue-600 mb-6 text-center">📋 Szczegóły wizyty</h2>
 
-            <div id="modalContent" class="space-y-4">
+            <div id="modalContent" class="space-y-6">
                 <!-- Wypełniane przez JavaScript -->
             </div>
 
-            <div class="flex justify-end gap-4 mt-6">
-                <button onclick="closeModal()" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Zamknij</button>
+            <div class="flex justify-center mt-6 w-full">
+                <button onclick="closeModal()" class="bg-gray-300 text-gray-800 px-6 py-2 rounded hover:bg-gray-400 transition">
+                    ← Wróć do listy pacjentów
+                </button>
             </div>
         </div>
     </div>
+
+
 
 </main>
 <script>
@@ -152,39 +156,34 @@
         const content = document.getElementById('modalContent');
         const visit = visits.find(v => v.id === id);
 
-        const formattedDate = new Date(visit.visit_date).toISOString().slice(0, 16); // for datetime-local
+        const formattedDate = new Date(visit.visit_date).toISOString().slice(0, 16);
+        const displayDate = new Date(visit.visit_date).toLocaleString('pl-PL');
 
         content.innerHTML = `
-            <p><strong>Pacjent:</strong> ${visit.patient.first_name} ${visit.patient.last_name}</p>
-            <p><strong>Lekarz:</strong> ${visit.doctor.first_name} ${visit.doctor.last_name}</p>
-            <p><strong>Gabinet:</strong> ${visit.visit_room}</p>
-            <p><strong>Data i godzina:</strong> ${new Date(visit.visit_date).toLocaleString()}</p>
-
-            <!-- Anuluj -->
-            <form action="/visits/${visit.id}" method="POST" onsubmit="return confirm('Na pewno chcesz anulować?')">
-                @csrf
+        <div>
+            <p><span class="font-semibold text-gray-700">👤 Pacjent:</span> ${visit.patient.first_name} ${visit.patient.last_name}</p>
+            <p><span class="font-semibold text-gray-700">🧑‍⚕️ Lekarz:</span> ${visit.doctor.first_name} ${visit.doctor.last_name}</p>
+            <p><span class="font-semibold text-gray-700">🏢 Gabinet:</span> ${visit.visit_room}</p>
+            <p><span class="font-semibold text-gray-700">📅 Data i godzina:</span> ${displayDate}</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4 pt-4 w-full">
+        <form action="/visits/${visit.id}" method="POST" onsubmit="return confirm('Na pewno chcesz anulować?')">
+            @csrf
         @method('DELETE')
-        <button type="submit" class="bg-red-600 text-white px-4 py-2 mt-2 rounded hover:bg-red-700 w-full">🗑️ Anuluj wizytę</button>
+        <button type="submit" class="bg-red-200 text-black w-full py-2 rounded hover:bg-red-300 transition">Anuluj wizytę</button>
     </form>
-
-    <!-- Zmień termin -->
-    <form action="/visits/${visit.id}/reschedule" method="POST" class="mt-4">
-                @csrf
-        @method('PUT')
-        <label class="block mb-1 text-sm text-gray-600">Nowa data i godzina:</label>
-        <input type="datetime-local" name="visit_date" min="${new Date().toISOString().slice(0, 16)}" value="${formattedDate}" required class="border px-3 py-2 rounded w-full mb-2">
-                <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 w-full">🕓 Zmień termin wizyty</button>
-            </form>
-
-            <!-- Edytuj -->
-            <form action="/visits/${visit.id}/edit" method="GET" class="mt-4">
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">✏️ Edytuj wizytę</button>
-            </form>
-        `;
+        <form action="/visits/${visit.id}/edit" method="GET">
+            <button type="submit" class="bg-blue-200 text-black w-full py-2 rounded hover:bg-blue-300 transition">
+                Edytuj wizytę
+            </button>
+        </form>
+        </div>
+    `;
 
         modal.classList.remove('hidden');
         modal.classList.add('flex');
     }
+
 
     function closeModal() {
         const modal = document.getElementById('visitModal');

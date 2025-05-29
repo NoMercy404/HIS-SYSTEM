@@ -27,6 +27,12 @@
 
 <!-- Main Content -->
 <main class="flex-1 p-10">
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <h1 class="text-3xl font-bold text-blue-600 mb-6">🧑‍⚕️ Pacjenci</h1>
 
     <!-- Pole wyszukiwania i filtr "Na oddziale" -->
@@ -36,7 +42,7 @@
                class="px-4 py-2 border rounded w-64">
 
         <button type="submit"
-                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                class="bg-yellow-200 text-black px-4 py-2 rounded hover:bg-yellow-300 transition">
             Szukaj
         </button>
 
@@ -52,8 +58,12 @@
            class="{{ $isOnWard ? 'bg-blue-200  hover:bg-blue-300' : 'bg-green-200 hover:bg-green-300' }} text-black px-4 py-2 rounded transition">
             {{ $isOnWard ? 'Pokaż wszystkich pacjentów' : 'Pokaż pacjentów na oddziale' }}
         </a>
-
+        <a href="{{ route('patients.create') }}"
+           class="bg-violet-200 text-black px-4 py-2 rounded hover:bg-violet-300 transition">
+            Dodaj pacjenta
+        </a>
     </form>
+
 
 
     <div class="bg-white p-6 rounded-lg shadow-md">
