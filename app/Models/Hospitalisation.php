@@ -49,6 +49,9 @@ class Hospitalisation extends Model
         return $this->belongsTo(Patients::class, 'patient_id');
     }
 
-
+    public function researches()
+    {
+        return $this->hasMany(Research::class, 'hospital_id'); // pod warunkiem, że jest kolumna hospitalisation_id w research
+    }
 
 }
