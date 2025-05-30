@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hospitalisation;
+
 use App\Models\Patients;
 use Illuminate\Http\Request;
 
@@ -57,7 +59,18 @@ class PatientsController extends Controller
         ]);
         $validated['is_on_ward'] = $request->has('is_on_ward') ? 1 : 0;
 
-        \App\Models\Patients::create($validated);
+        // Tworzymy pacjenta
+        $patient = \App\Models\Patients::create($validated);
+
+        // Jeśli pacjent jest na oddziale, tworzymy hospitalizację
+        if ($validated['is_on_ward']) {
+            Hospitalisation::create([
+                'patient_id' => $patient->id,
+                'date_of_hospital_admission' => now(), // data przyjęcia to teraz
+                'discharge_date' => null,
+                'disease_number' => 'Brak danych', // lub możesz pozwolić na pustą wartość
+            ]);
+        }
 
         return redirect()->route('patients.index')->with('success', 'Pacjent dodany!');
     }
@@ -94,12 +107,30 @@ class PatientsController extends Controller
             'is_on_ward' => 'nullable|boolean',
         ]);
 
-        $validated['is_on_ward'] = $request->has('is_on_ward');
+        $isOnWard = $request->has('is_on_ward');
+        $validated['is_on_ward'] = $isOnWard;
 
         $patient->update($validated);
 
+        $existingHospitalisation = Hospitalisation::where('patient_id', $patient->id)
+            ->whereNull('discharge_date')
+            ->latest('date_of_hospital_admission')
+            ->first();
+
+        if ($isOnWard && !$existingHospitalisation) {
+            Hospitalisation::create([
+                'patient_id' => $patient->id,
+                'date_of_hospital_admission' => now(),
+                'discharge_date' => null,
+                'disease_number' => 'Brak danych',
+            ]);
+        } elseif (!$isOnWard && $existingHospitalisation) {
+            $existingHospitalisation->delete();
+        }
+
         return redirect()->route('patients.index')->with('success', 'Pacjent został zaktualizowany.');
     }
+
 
     /**
      * Remove the specified resource from storage.

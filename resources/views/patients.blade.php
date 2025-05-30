@@ -74,7 +74,7 @@
                 <tr class="bg-gray-100 text-gray-700">
                     <th class="py-2 px-4 border-b w-32">Imię</th>
                     <th class="py-2 px-4 border-b w-32">Nazwisko</th>
-                    <th class="py-2 px-4 border-b w-40">PESEL</th>
+{{--                    <th class="py-2 px-4 border-b w-40">PESEL</th>--}}
                     <th class="py-2 px-4 border-b w-40">Data urodzenia</th>
                     <th class="py-2 px-4 border-b w-32">Telefon</th>
                     <th class="py-2 px-4 border-b w-64">Adres</th>
@@ -85,7 +85,7 @@
                     <tr class="hover:bg-gray-50 cursor-pointer" onclick="openModal({{ $patient->id }})">
                         <td class="py-2 px-4 border-b">{{ $patient->first_name }}</td>
                         <td class="py-2 px-4 border-b">{{ $patient->last_name }}</td>
-                        <td class="py-2 px-4 border-b">{{ $patient->PESEL }}</td>
+{{--                        <td class="py-2 px-4 border-b">{{ $patient->PESEL }}</td>--}}
                         <td class="py-2 px-4 border-b">{{ \Carbon\Carbon::parse($patient->DateOfBirth)->format('d.m.Y') }}</td>
                         <td class="py-2 px-4 border-b">{{ $patient->phoneNumber }}</td>
                         <td class="py-2 px-4 border-b">{{ $patient->adress }}</td>
