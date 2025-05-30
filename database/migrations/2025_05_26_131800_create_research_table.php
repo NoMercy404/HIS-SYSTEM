@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('research', function (Blueprint $table) {
             $table->id();
-            $table->integer('hospital_id');
             $table->enum('research_type', ['laboratoryjne', 'radiologiczne','zabieg'])->nullable();
             $table->string('note');
             $table->date('date_of_research');

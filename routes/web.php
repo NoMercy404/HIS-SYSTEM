@@ -24,6 +24,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::resource('research', ResearchController::class);
 });
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -128,6 +129,11 @@ Route::get('/patients', function (Request $request) {
 })->name('patients.index');
 
 Route::get('/patients/{id}/history', [PatientsController::class, 'history'])->name('patients.history');
+
+Route::get('/patients/{patient}/edit', [PatientsController::class, 'edit'])->name('patients.edit');
+Route::put('/patients/{patient}', [PatientsController::class, 'update'])->name('patients.update');
+Route::delete('/patients/{patient}', [PatientsController::class, 'destroy'])->name('patients.destroy');
+
 Route::get('/patients/{id}', [PatientsController::class, 'show'])->where('id', '[0-9]+')->name('patients.show');
 Route::delete('/visits/{id}', [VisitController::class, 'destroy'])->name('visits.destroy');
 Route::put('/visits/{id}/reschedule', [VisitController::class, 'reschedule'])->name('visits.reschedule');
@@ -141,4 +147,7 @@ Route::get('/patients/create', [PatientsController::class, 'create'])->name('pat
 
 Route::resource('patients', PatientsController::class);
 Route::resource('research', ResearchController::class);
+Route::get('/research/{id}/complete', [ResearchController::class, 'completeForm'])->name('research.complete.form');
+Route::put('/research/{id}/complete', [ResearchController::class, 'complete'])->name('research.complete');
+Route::put('/research/{id}/cancel', [ResearchController::class, 'cancel'])->name('research.cancel');
 

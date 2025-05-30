@@ -41,7 +41,9 @@ class UserSeeder extends Seeder
                 'email' => 'anna@example.com',
                 'password' => Hash::make('admin'),
                 'role' => 'lekarz',
-                'password_changed_at' => Carbon::create(2025, 4, 20, 12, 0, 0),
+                'password_changed_at' => Carbon::now()->subDays(5),
+                //'password_changed_at' => Carbon::create(2025, 4, 20, 12, 0, 0),
+                // przy tym mozna sprawdzic wymuszenie zmiany hasla
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

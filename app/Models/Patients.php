@@ -57,6 +57,9 @@ class Patients extends Authenticatable
     {
         return $this->hasMany(Hospitalisation::class, 'patient_id');
     }
-
+    public function researches()
+    {
+        return $this->hasMany(Research::class); // lub 'App\Models\Research' jeśli nie masz use na górze
+    }
 
 }
