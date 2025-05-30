@@ -16,3 +16,4 @@ class ResearchSeeder extends Seeder
         Research::factory()->count(100)->create();
     }
 }
+//x
