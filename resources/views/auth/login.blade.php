@@ -8,9 +8,9 @@
 <body class="bg-blue-50 flex items-center justify-center h-screen">
 
 <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-    <h1 class="text-2xl font-bold mb-6 text-center">Zaloguj się</h1>
+    <h1 class="text-2xl font-bold text-blue-600 mb-6 text-center">Zaloguj się</h1>
 
-    @if (session('error'))
+@if (session('error'))
         <div class="text-red-600 mb-4">{{ session('error') }}</div>
     @endif
 

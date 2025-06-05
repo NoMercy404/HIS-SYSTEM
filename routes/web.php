@@ -14,12 +14,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PatientsController;
 use App\Http\Controllers\VisitController;
 
-Route::view('/', 'welcome')->name('home');
+Route::view('/', 'auth.login')->name('home');
 Route::view('/login', 'auth.login')->name('login');
-Route::view('/register', 'auth.register')->name('register');
-
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard');
@@ -31,10 +28,7 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register']);
 
 
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/login');
-})->name('logout');
+
 
 Route::get('/dashboard', function () {
     $user = Auth::user();
@@ -151,3 +145,7 @@ Route::get('/research/{id}/complete', [ResearchController::class, 'completeForm'
 Route::put('/research/{id}/complete', [ResearchController::class, 'complete'])->name('research.complete');
 Route::put('/research/{id}/cancel', [ResearchController::class, 'cancel'])->name('research.cancel');
 
+Route::delete('/research/{research}', [ResearchController::class, 'destroy'])->name('research.destroy');
+Route::get('/research/{id}/complete', [ResearchController::class, 'completeForm'])->name('research.complete.form');
+Route::post('/research/{id}/complete', [ResearchController::class, 'complete'])->name('research.complete');
+Route::patch('/research/{id}/cancel', [ResearchController::class, 'cancel'])->name('research.cancel');
