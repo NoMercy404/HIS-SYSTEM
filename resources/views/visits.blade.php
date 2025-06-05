@@ -130,7 +130,7 @@
         @endif
     </div>
     <!-- Modal -->
-    <div id="visitModal" class="fixed inset-0 bg-green bg-opacity-30 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div id="visitModal" class="fixed inset-0  bg-opacity-30 backdrop-blur-sm hidden items-center justify-center z-50">
         <div class="bg-white rounded-2xl p-8 w-full max-w-xl shadow-2xl">
             <h2 class="text-3xl font-bold text-blue-600 mb-6 text-center">📋 Szczegóły wizyty</h2>
 

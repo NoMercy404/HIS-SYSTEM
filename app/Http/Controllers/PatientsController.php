@@ -107,7 +107,7 @@ class PatientsController extends Controller
             'is_on_ward' => 'nullable|boolean',
         ]);
 
-        $isOnWard = $request->has('is_on_ward');
+        $isOnWard = (bool) $request->input('is_on_ward', false);
         $validated['is_on_ward'] = $isOnWard;
 
         $patient->update($validated);
@@ -125,7 +125,10 @@ class PatientsController extends Controller
                 'disease_number' => 'Brak danych',
             ]);
         } elseif (!$isOnWard && $existingHospitalisation) {
-            $existingHospitalisation->delete();
+            $existingHospitalisation->update([
+                'discharge_date' => now(),
+            ]);
+
         }
 
         return redirect()->route('patients.index')->with('success', 'Pacjent został zaktualizowany.');

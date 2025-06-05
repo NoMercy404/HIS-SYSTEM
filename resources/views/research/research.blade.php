@@ -117,7 +117,7 @@
                         @endphp
 
                         <td class="py-2 px-4 border-b">
-                            <div class="grid {{ $columns }} gap-1 justify-items-center">
+                            <div class="grid {{ $columns }} gap-5 justify-items-center">
 
                                 @if(in_array('complete', $actions))
                                     <a href="{{ route('research.complete.form', $research->id) }}"
