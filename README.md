@@ -1,99 +1,83 @@
-# System Zarządzania Szpitalem
+# 📌 Szpital System
 
-## O Projekcie
+Aplikacja webowa do zarządzania użytkownikami, logowaniem oraz zadaniami — zbudowana w oparciu o **Laravel** i **Vite + npm**.
 
-System zarządzania szpitalem to nowoczesna aplikacja webowa zbudowana przy użyciu frameworka Laravel, zaprojektowana do efektywnego zarządzania procesami szpitalnymi. Projekt wykorzystuje najnowsze technologie i najlepsze praktyki programistyczne.
+---
 
-## Wymagania Systemowe
+## 📖 Opis aplikacji
 
-- PHP >= 8.2
-- Composer
-- Node.js i npm
-- MySQL/PostgreSQL
-- Serwer WWW (np. Apache, Nginx)
+Szpital System to aplikacja umożliwiająca:
 
-## Technologie
+- Rejestrację i logowanie użytkowników  
+- Zarządzanie dostępem do panelu administracyjnego  
+- Obsługę zadań i użytkowników (np. lekarzy, pacjentów)  
+- Wymuszanie zmiany hasła po 30 dniach  
+- Bezpieczne sesje z autoryzacją i migracjami  
 
-- **Backend:**
-  - Laravel 12.0
-  - PHP 8.2
-  - Laravel Tinker
-  - PHPUnit dla testów
+Projekt łączy backend (Laravel) z frontendem (npm/Vite), zapewniając dynamiczną i nowoczesną aplikację webową.
 
-- **Frontend:**
-  - TailwindCSS
-  - Vite
-  - Axios
+---
 
-## Instalacja
+## ⚙️ Wymagania wstępne
 
-1. Sklonuj repozytorium:
+Przed rozpoczęciem pracy upewnij się, że masz zainstalowane i **dodane do zmiennych środowiskowych**:
+
+- **PHP** (zalecana wersja: 8.2+)
+- **Node.js** (zalecana wersja LTS, np. `v18.x` lub `v20.x`)
+- **npm** (np. `v9+`)
+- **Composer**
+- **SQLite** (do lokalnej bazy danych)
+
+Sprawdź wersje poleceniami:
+
 ```bash
-git clone [adres-repozytorium]
+php -v
+node -v
+npm -v
+composer -V
+```
+## 🛠️ Instalacja i uruchomienie
+
+1. **Przejdź do katalogu projektu:**
+
+```bash
 cd szpital-system
 ```
-
-2. Zainstaluj zależności PHP:
+2. **Zainstaluj zależności PHP i JS:**
 ```bash
-composer install
-```
-
-3. Zainstaluj zależności JavaScript:
-```bash
+composer install --ignore-platform-req=ext-fileinfo
 npm install
 ```
-
-4. Skonfiguruj środowisko:
+3. **Wykonaj migracje i seedowanie:**
 ```bash
-cp .env.example .env
-php artisan key:generate
+php artisan migrate:fresh --seed
 ```
-
-5. Skonfiguruj bazę danych w pliku `.env`
-
-6. Wykonaj migracje:
+4. **Uruchom backend (Laravel):**
 ```bash
-php artisan migrate
-```
-
-## Uruchomienie Aplikacji
-
-Projekt można uruchomić na dwa sposoby:
-
-### 1. Tryb Deweloperski (z hot-reloadingiem)
-
-```bash
-composer run dev
-```
-
-To polecenie uruchomi:
-- Serwer Laravel na `http://localhost:8000`
-- Kolejkę zadań
-- Logi aplikacji
-- Vite z hot-reloadingiem
-
-### 2. Tryb Produkcyjny
-
-```bash
-npm run build
 php artisan serve
 ```
-
-## Testowanie
-
-Aby uruchomić testy:
-
+5. **Uruchom frontend (Vite)::**
 ```bash
-composer run test
+npm run dev
 ```
+6. **Otwórz aplikacje::**
+```bash
+http://localhost:8000
+```
+w przypadku nie działania tego linku kliknij link który pojawia się po wpisaniu komendy ```php artisan serve```.
 
-## Struktura Projektu
+## 🧪 Konta testowe
 
-- `app/` - Główny kod aplikacji
-- `config/` - Pliki konfiguracyjne
-- `database/` - Migracje i seedy bazy danych
-- `public/` - Pliki publiczne
-- `resources/` - Widoki, assety i pliki frontendowe
-- `routes/` - Definicje tras
-- `tests/` - Testy aplikacji
+Możesz skorzystać z poniższych kont do testowania aplikacji:
 
+**Konto 1:**
+
+- **Email:** `test@example.com`
+- **Hasło:** `admin123`
+
+**Konto 2:**
+
+- **Email:** `anna@example.com`
+- **Hasło:** `admin`
+
+lub własnoręcznie się zarejestrować
