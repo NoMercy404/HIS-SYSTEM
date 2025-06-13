@@ -20,7 +20,7 @@ class HospitalisationFactory extends Factory
             : null;
 
         return [
-            'patient_id' => $this->faker->numberBetween(1, 20),
+            'patient_id' => \App\Models\Patients::factory(),
             'date_of_hospital_admission' => $admissionDate,
             'discharge_date' => $dischargeDate,
             'disease_number' => $this->faker->bothify('CH-####'),
