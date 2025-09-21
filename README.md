@@ -68,19 +68,12 @@ w przypadku nie działania tego linku kliknij link który pojawia się po wpisan
 
 
 ##🖼️ Screenshots
-<img width="986" height="687" alt="1" src="https://github.com/user-attachments/assets/712b506a-db00-4a33-b8ab-aece46f0faf5" />
+<img width="986" height="687" alt="1" src="https://github.com/user-attachments/assets/59439936-04b4-49ba-bd62-f11af628fa41" />
+<img width="1872" height="898" alt="5" src="https://github.com/user-attachments/assets/3b9d72ea-5b6f-4449-8aa6-22e5e7f24476" />
+<img width="1872" height="892" alt="6" src="https://github.com/user-attachments/assets/20269934-e05f-4840-85bf-ae8fcb3af488" />
+<img width="1867" height="882" alt="9" src="https://github.com/user-attachments/assets/14d946ea-6f07-40d2-80eb-6532c7311196" />
+<img width="1632" height="761" alt="10" src="https://github.com/user-attachments/assets/69b18c4e-efb5-4227-a580-73d97448f47f" />
 
-<img width="1498" height="866" alt="2" src="https://github.com/user-attachments/assets/7cb1b571-b0f7-4751-9511-0c8b211c0989" />
-
-<img width="1872" height="898" alt="5" src="https://github.com/user-attachments/assets/b74f8980-1c50-42d4-b6eb-df65f24397e3" />
-
-<img width="1872" height="892" alt="6" src="https://github.com/user-attachments/assets/d60bf17a-e7c3-484c-9bbc-0c9844b9d93b" />
-
-<img width="1868" height="887" alt="7" src="https://github.com/user-attachments/assets/abb4fdf0-5e3b-4da2-b4e4-b8e8572585dc" />
-
-<img width="1848" height="883" alt="8" src="https://github.com/user-attachments/assets/cd5abf60-ef87-4c8f-b8ca-fdbf7190e07b" />
-
-<img width="948" height="712" alt="11" src="https://github.com/user-attachments/assets/af851c68-0e0d-48f9-801c-2ec56a0267b6" />
 
 
 ## 🧪 Konta testowe
