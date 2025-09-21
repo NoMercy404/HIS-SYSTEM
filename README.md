@@ -1,4 +1,4 @@
-# 📌 Szpital System
+# 📌 System Szpitalny
 
 Aplikacja webowa do zarządzania użytkownikami, logowaniem oraz zadaniami — zbudowana w oparciu o **Laravel** i **Vite + npm**.
 
