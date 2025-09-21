@@ -67,7 +67,7 @@ http://localhost:8000
 w przypadku nie działania tego linku kliknij link który pojawia się po wpisaniu komendy ```php artisan serve```.
 
 
-##🖼️ Screenshots
+## 🖼️ Screenshots
 <img width="986" height="687" alt="1" src="https://github.com/user-attachments/assets/59439936-04b4-49ba-bd62-f11af628fa41" />
 <img width="1872" height="898" alt="5" src="https://github.com/user-attachments/assets/3b9d72ea-5b6f-4449-8aa6-22e5e7f24476" />
 <img width="1872" height="892" alt="6" src="https://github.com/user-attachments/assets/20269934-e05f-4840-85bf-ae8fcb3af488" />
