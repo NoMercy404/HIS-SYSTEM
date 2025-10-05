@@ -121,3 +121,6 @@ class VisitController extends Controller
         return redirect()->route('visits.index')->with('success', 'Termin wizyty został zmieniony.');
     }
 }
+
+
+

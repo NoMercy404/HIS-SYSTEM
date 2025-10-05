@@ -17,8 +17,6 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-
-            // Sprawdź czy hasło było zmieniane ponad 30 dni temu
             if (!$user->password_changed_at || $user->password_changed_at->diffInDays(now()) > 30) {
                 return redirect()->route('password.change.form')
                     ->with('status', 'Twoje hasło jest przestarzałe. Zmień je, aby kontynuować.');
@@ -27,29 +25,30 @@ class AuthController extends Controller
             return redirect()->intended('dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'Nieprawidłowe dane logowania.',
-        ]);
+        return redirect()->back()
+            ->withInput($request->only('email'))
+            ->with('error', 'Nieprawidłowy email lub hasło.');
+
     }
 
 
-    public function register(Request $request)
-    {
-        $request->validate([
-            'firstname' => 'required|string',
-            'lastname' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
-
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('login')->with('success', 'Rejestracja zakończona sukcesem!');
-    }
+//    public function register(Request $request)
+//    {
+//        $request->validate([
+//            'firstname' => 'required|string',
+//            'lastname' => 'required|string',
+//            'email' => 'required|email|unique:users',
+//            'password' => 'required|confirmed|min:6',
+//        ]);
+//
+//        User::create([
+//            'name' => $request->name,
+//            'email' => $request->email,
+//            'password' => Hash::make($request->password),
+//        ]);
+//
+//        return redirect()->route('login')->with('success', 'Rejestracja zakończona sukcesem!');
+//    }
 
     public function logout()
     {

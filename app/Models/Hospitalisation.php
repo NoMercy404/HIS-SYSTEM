@@ -17,9 +17,10 @@ class Hospitalisation extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'patient_id',
+        'date_of_hospital_admission',
+        'discharge_date',
+        'disease_number',
     ];
 
     /**

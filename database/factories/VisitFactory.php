@@ -14,8 +14,8 @@ class VisitFactory extends Factory
     public function definition(): array
     {
         return [
-            'patient_id' => $this->faker->numberBetween(1, 20),
-            'doctor_id' => $this->faker->numberBetween(1, 23),
+            'patient_id' => \App\Models\Patients::factory(),
+            'doctor_id' =>  \App\Models\User::factory(),
             'visit_date' => function () {
                 $start = now()->subMonths(3);
                 $end = now()->addMonth();
